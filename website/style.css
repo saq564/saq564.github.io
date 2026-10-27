@@ -1,0 +1,892 @@
+/* ============================================================
+   COLOURS
+   All colours live here as "variables". The light theme just
+   swaps these values, so the rest of the file never changes.
+   ============================================================ */
+:root,
+[data-theme="dark"] {
+  --bg: #07080d;
+  --text: #eef0f7;
+  --muted: #9aa3b8;
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --grid-line: rgba(255, 255, 255, 0.035);
+  --purple: #8b6cff;
+  --blue: #2fb8ff;
+  --green: #3ddc97;
+  --amber: #f5b84c;
+  --glow-1: rgba(109, 76, 255, 0.45);
+  --glow-2: rgba(0, 212, 255, 0.28);
+}
+
+[data-theme="light"] {
+  --bg: #f7f8fc;
+  --text: #11131a;
+  --muted: #586074;
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(17, 19, 26, 0.10);
+  --grid-line: rgba(17, 19, 26, 0.05);
+  --purple: #6a46ff;
+  --blue: #0b8fd6;
+  --green: #14995e;
+  --amber: #b26a00;
+  --glow-1: rgba(109, 76, 255, 0.22);
+  --glow-2: rgba(0, 180, 255, 0.18);
+}
+
+/* The purple-to-blue gradient, used for headings and buttons */
+:root { --gradient: linear-gradient(90deg, var(--purple), var(--blue)); }
+
+/* ============================================================
+   BASICS
+   ============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background 0.4s, color 0.4s;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Keeps content in a centred column with space at the sides */
+.container { max-width: 1100px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.muted { color: var(--muted); font-size: 0.9rem; }
+
+/* "Glass" panels: see-through with a blur behind them */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ============================================================
+   BACKGROUND DECORATION
+   position: fixed keeps these still while the page scrolls.
+   ============================================================ */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  /* Fades the grid out towards the bottom of the screen */
+  mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
+  -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 90%);
+}
+
+.glow {
+  position: fixed;
+  z-index: -1;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+  transition: transform 0.6s ease-out;  /* makes the mouse-follow movement smooth */
+}
+.glow-1 { top: -180px; right: -120px; background: radial-gradient(circle, var(--glow-1), transparent 65%); animation: float 12s ease-in-out infinite; }
+.glow-2 { bottom: -220px; left: -80px; background: radial-gradient(circle, var(--glow-2), transparent 65%); animation: float 15s ease-in-out infinite reverse; }
+
+/* A "keyframes" animation: the glows drift slowly up and down forever */
+@keyframes float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 30px 40px; }
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  z-index: 100;
+  background: var(--gradient);
+}
+
+/* ============================================================
+   1. TOP BAR
+   A floating "pill" that sticks to the top of the screen.
+   ============================================================ */
+.topbar {
+  position: fixed;
+  top: 16px; left: 0; right: 0;
+  z-index: 50;
+  padding: 0 24px;
+}
+
+.nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 10px 24px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+/* script.js adds "scrolled" once you scroll down, which turns on the glass look */
+.topbar.scrolled .nav {
+  background: var(--glass);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.logo { font-weight: 800; font-size: 1.25rem; margin-right: auto; }
+.logo span { color: var(--blue); }
+
+.nav-links { display: flex; gap: 4px; list-style: none; }
+.nav-links a {
+  display: block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--text); background: var(--glass); }
+
+.icon-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.icon-btn:hover { transform: rotate(20deg) scale(1.08); }
+
+/* Dark mode shows the sun (click for light), light mode shows the moon */
+.icon-moon { display: none; }
+[data-theme="light"] .icon-moon { display: inline; }
+[data-theme="light"] .icon-sun { display: none; }
+
+.menu-btn { display: none; }
+
+/* ============================================================
+   2. INTRO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding-top: 120px;
+  padding-bottom: 80px;
+}
+
+.hero-text { flex: 1; }
+
+/* The network canvas fills the whole intro, edge to edge, behind the text */
+.network {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 100vw;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: 0;
+  /* Fades the dots out at the bottom so the intro blends into the next section */
+  mask-image: linear-gradient(to bottom, black 70%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
+}
+/* Keeps the text and card above the canvas */
+.hero-text, .hero-card { position: relative; z-index: 1; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  margin: 24px 0;
+  min-height: 3.15em;  /* room for 3 lines, so the page doesn't jump while the text types */
+}
+
+/* The blinking bar after the typing text */
+.cursor {
+  display: inline-block;
+  width: 4px;
+  height: 0.85em;
+  margin-left: 6px;
+  vertical-align: -0.08em;
+  background: var(--blue);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.tagline { font-size: 1.25rem; color: var(--muted); max-width: 640px; }
+
+.buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.btn:hover { transform: translateY(-3px); }
+.btn-primary {
+  background: var(--gradient);
+  color: #fff;
+  border: none;
+  box-shadow: 0 10px 30px rgba(109, 76, 255, 0.35);
+}
+.btn-primary:hover { box-shadow: 0 14px 40px rgba(109, 76, 255, 0.55); }
+.btn-ghost { background: var(--glass); color: var(--text); }
+.btn-ghost:hover { border-color: var(--purple); }
+
+.arrow { display: inline-block; transition: transform 0.2s; }
+.btn:hover .arrow,
+.card-links a:hover .arrow { transform: translateX(4px); }
+
+.hero-card {
+  width: 340px;
+  padding: 26px;
+  border-radius: 20px;
+  animation: bob 6s ease-in-out infinite;
+}
+@keyframes bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -14px; }
+}
+.hero-card-label { color: var(--purple); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.hero-card h3 { font-size: 1.3rem; margin: 6px 0 8px; }
+.hero-card p { color: var(--muted); font-size: 0.95rem; }
+.code-lines {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  color: var(--muted);
+}
+[data-theme="light"] .code-lines { background: rgba(17, 19, 26, 0.05); }
+.code-lines i { font-style: normal; color: var(--purple); }
+
+/* The little mouse shape at the bottom of the intro */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px; left: 50%;
+  width: 26px; height: 42px;
+  margin-left: -13px;
+  border: 2px solid var(--glass-border);
+  border-radius: 14px;
+}
+.scroll-hint span {
+  position: absolute;
+  top: 8px; left: 50%;
+  width: 4px; height: 8px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--muted);
+  animation: wheel 1.6s infinite;
+}
+@keyframes wheel {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+/* ============================================================
+   SECTIONS (shared by About, Projects, Experience...)
+   ============================================================ */
+.section { padding-top: 110px; padding-bottom: 110px; }
+
+.section-label {
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+
+.section h2 {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 40px;
+  max-width: 760px;
+}
+
+.lead { font-size: 1.1rem; color: var(--muted); margin-bottom: 16px; }
+
+/* ============================================================
+   SCROLL ANIMATION
+   Everything with class "reveal" starts invisible and a bit
+   lower. script.js adds "visible" when it scrolls into view,
+   and the transition slides it up smoothly.
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ============================================================
+   3. ABOUT
+   ============================================================ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.stats { display: grid; gap: 14px; }
+.stat {
+  padding: 20px 24px;
+  border-radius: 16px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.stat:hover { transform: translateX(6px); border-color: var(--purple); }
+.stat strong {
+  font-size: 2rem;
+  font-weight: 800;
+  min-width: 130px;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stat span { color: var(--muted); }
+
+/* ============================================================
+   4. PROJECT CARDS
+   The grid puts cards side by side on laptops and stacks
+   them on phones automatically.
+   ============================================================ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover { border-color: rgba(139, 108, 255, 0.5); box-shadow: 0 20px 50px rgba(109, 76, 255, 0.18); }
+
+/* Spotlight: a soft light that follows your mouse inside the card.
+   script.js sets --x and --y to the mouse position. */
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(350px circle at var(--x, 50%) var(--y, 50%), rgba(139, 108, 255, 0.16), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.spotlight:hover::before { opacity: 1; }
+
+.card-top { display: flex; justify-content: space-between; align-items: center; }
+.card-icon {
+  width: 48px; height: 48px;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  border-radius: 12px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+}
+.card h3 { font-size: 1.4rem; }
+.card p { color: var(--muted); }
+
+.status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+.status-done { color: var(--green); }
+.status-progress { color: var(--amber); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+.tags li {
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--muted);
+}
+
+.card-links { display: flex; gap: 20px; align-items: center; margin-top: auto; padding-top: 8px; font-weight: 600; }
+.card-links a { color: var(--blue); }
+
+/* ============================================================
+   5. EXPERIENCE
+   ============================================================ */
+.timeline { display: grid; gap: 20px; }
+
+.job {
+  position: relative;
+  padding: 28px 30px 28px 34px;
+  border-radius: 18px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+/* The coloured stripe down the left edge */
+.job::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 20px; bottom: 20px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--gradient);
+}
+.job:hover { transform: translateY(-4px); border-color: rgba(139, 108, 255, 0.5); }
+
+.job-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; }
+.job h3 { font-size: 1.2rem; }
+.job-place { color: var(--blue); font-weight: 500; }
+.job-date {
+  align-self: start;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  color: var(--muted);
+}
+.job ul { padding-left: 20px; color: var(--muted); }
+.job li { margin-bottom: 6px; }
+.job strong { color: var(--text); }
+
+/* ============================================================
+   6. SKILLS
+   ============================================================ */
+.badges { display: flex; flex-wrap: wrap; gap: 12px; list-style: none; }
+.badges li {
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  font-weight: 500;
+  cursor: default;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.badges li:hover {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--purple);
+  box-shadow: 0 8px 24px rgba(109, 76, 255, 0.3);
+}
+
+/* ============================================================
+   7. CONTACT
+   ============================================================ */
+.contact-box {
+  padding: 56px 48px;
+  border-radius: 28px;
+  text-align: center;
+}
+.contact-box h2 { margin: 0 auto 16px; }
+.contact-box .buttons { justify-content: center; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 32px;
+  padding-bottom: 40px;
+  border-top: 1px solid var(--glass-border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.footer a:hover { color: var(--text); }
+
+/* ============================================================
+   TABLETS AND PHONES
+   ============================================================ */
+@media (max-width: 900px) {
+  .hero-card { display: none; }
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .topbar { top: 10px; padding: 0 12px; }
+  .nav { padding-left: 18px; }
+  .menu-btn { display: block; }
+
+  /* On phones the links become a drop-down panel, opened by the ☰ button */
+  .nav-links {
+    position: absolute;
+    top: 64px; left: 12px; right: 12px;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 20px;
+    background: var(--bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .nav-links.open { opacity: 1; transform: none; pointer-events: auto; }
+  .nav-links a { padding: 12px 16px; }
+
+  .hero { min-height: auto; padding-top: 140px; }
+  .scroll-hint { display: none; }
+  .tagline { font-size: 1.1rem; }
+  .section { padding-top: 72px; padding-bottom: 72px; }
+  .stat strong { min-width: 110px; font-size: 1.7rem; }
+  .contact-box { padding: 40px 22px; }
+}
+
+/* People who turn off animations in their device settings get a still page */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ============================================================
+   "ASK ABOUT SAQIB" CHAT
+   ============================================================ */
+.ask-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.ask-note { display: flex; gap: 10px; align-items: baseline; color: var(--muted); font-size: 0.9rem; }
+
+.chat {
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 520px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(109, 76, 255, 0.15);
+}
+
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.chat-head strong { display: block; font-size: 0.95rem; }
+.chat-avatar {
+  width: 38px; height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gradient);
+  color: #fff;
+  font-weight: 800;
+}
+.chat-online { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
+
+/* The scrolling area with the messages */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.msg {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  animation: pop 0.3s ease;
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.msg-user {
+  align-self: flex-end;
+  background: var(--gradient);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.msg-bot {
+  align-self: flex-start;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-bottom-left-radius: 4px;
+}
+/* The little "Source" tag under each answer */
+.msg-source {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--blue);
+}
+
+/* Three bouncing dots while the assistant is "thinking" */
+.typing { display: flex; gap: 4px; padding: 16px; }
+.typing span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: bounce 1s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.15s; }
+.typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+/* Suggested questions you can click. They sit in one row you can scroll sideways. */
+.chat-chips {
+  display: flex;
+  gap: 8px;
+  padding: 4px 20px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;  /* hides the scrollbar in Firefox */
+  mask-image: linear-gradient(to right, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent);
+}
+.chat-chips::-webkit-scrollbar { display: none; }  /* and in Chrome/Safari */
+.chip { flex-shrink: 0; }
+.chip {
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.chip:hover { border-color: var(--purple); transform: translateY(-2px); }
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--glass-border);
+}
+.chat-input input {
+  flex: 1;
+  font: inherit;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text);
+  outline: none;
+}
+.chat-input input:focus { border-color: var(--purple); }
+.chat-input button {
+  width: 46px;
+  border: none;
+  border-radius: 12px;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* ============================================================
+   HIDDEN TERMINAL
+   ============================================================ */
+.terminal-hint {
+  font: inherit;
+  font-size: 0.85rem;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.terminal-hint:hover { color: var(--green); }
+kbd {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--glass-border);
+}
+
+.terminal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fade 0.2s ease;
+}
+.terminal-backdrop[hidden] { display: none; }
+@keyframes fade { from { opacity: 0; } }
+
+/* The terminal is always dark, even in light mode, like a real one */
+.terminal {
+  width: min(760px, 100%);
+  height: min(480px, 80vh);
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0c100d;
+  border: 1px solid #1f3a27;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(61, 255, 122, 0.08);
+  font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.92rem;
+  color: #c8f7d4;
+  animation: pop 0.25s ease;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #111814;
+  border-bottom: 1px solid #1f3a27;
+}
+.t-dot { width: 12px; height: 12px; border-radius: 50%; }
+.terminal-title { margin-left: 8px; color: #5d8a69; font-size: 0.8rem; }
+.terminal-close { margin-left: auto; background: none; border: none; color: #5d8a69; cursor: pointer; font-size: 1rem; }
+
+.terminal-body { flex: 1; overflow-y: auto; padding: 16px 18px; cursor: text; }
+#terminal-output div { white-space: pre-wrap; word-break: break-word; margin-bottom: 2px; }
+.t-prompt { color: #3dff7a; margin-right: 8px; white-space: nowrap; }
+.t-muted { color: #5d8a69; }
+.t-accent { color: #7ad3ff; }
+.t-yellow { color: #ffd479; }
+.t-error { color: #ff7b72; }
+
+.terminal-line { display: flex; align-items: center; }
+.terminal-line input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  color: #eafff0;
+  caret-color: #3dff7a;
+}
+
+/* ============================================================
+   GLOWING CURSOR AND MAGNETIC BUTTONS
+   script.js moves these two circles to follow the mouse.
+   ============================================================ */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 300;
+  border-radius: 50%;
+  pointer-events: none;  /* clicks go straight through to the page */
+  opacity: 0;
+  transition: opacity 0.3s, width 0.25s, height 0.25s, margin 0.25s, background 0.25s, border-color 0.25s;
+}
+.cursor-dot {
+  width: 8px; height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--blue);
+  box-shadow: 0 0 12px var(--blue), 0 0 24px var(--purple);
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  margin: -18px 0 0 -18px;
+  border: 1.5px solid rgba(139, 108, 255, 0.6);
+}
+body.has-cursor .cursor-dot,
+body.has-cursor .cursor-ring { opacity: 1; }
+
+/* Over a link or button, the ring grows and fills with a soft glow */
+body.cursor-hover .cursor-ring {
+  width: 60px; height: 60px;
+  margin: -30px 0 0 -30px;
+  background: rgba(139, 108, 255, 0.12);
+  border-color: var(--blue);
+}
+
+/* Magnetic buttons move smoothly back into place when the mouse leaves */
+.magnetic { transition: transform 0.25s ease-out, box-shadow 0.2s, background 0.2s, border-color 0.2s; }
+
+@media (max-width: 900px) {
+  .ask-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .chat { height: 480px; }
+  .terminal-hint kbd { display: none; }
+}

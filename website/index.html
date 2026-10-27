@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <!-- Makes the page fit phone screens instead of showing a tiny desktop page -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saqib | Software Developer</title>
+  <meta name="description" content="Saqib, Computer Science student at the University of Greenwich, building software that solves real problems, from web apps to AI.">
+  <!-- Inter is a free font from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Runs before the page draws, so the saved theme shows straight away with no flash -->
+  <script>
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <!-- Thin bar at the very top that fills up as you scroll -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- Background decoration: a faint grid and two coloured glows -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="glow glow-1" aria-hidden="true"></div>
+  <div class="glow glow-2" aria-hidden="true"></div>
+
+  <!-- 1. TOP BAR -->
+  <header class="topbar" id="topbar">
+    <nav class="nav">
+      <a href="#top" class="logo">saqib<span>.</span></a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#ask">Ask AI</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button id="theme-toggle" class="icon-btn" aria-label="Switch light and dark mode">
+        <span class="icon-moon">☾</span><span class="icon-sun">☀</span>
+      </button>
+      <!-- Menu button, only shown on phones -->
+      <button id="menu-toggle" class="icon-btn menu-btn" aria-label="Open menu" aria-expanded="false">☰</button>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- 2. INTRO: the first thing people see -->
+    <section class="hero container">
+      <!-- 1. The "living AI network": dots and lines drawn by script.js -->
+      <canvas id="network" class="network" aria-hidden="true"></canvas>
+      <div class="hero-text">
+        <div class="pill reveal"><span class="dot"></span>Open to internships &amp; placements</div>
+        <h1 class="reveal">
+          Hi, I'm Saqib.<br>
+          <span class="gradient-text">I build<br><span id="typed">real products</span><span class="cursor"></span></span>
+        </h1>
+        <p class="tagline reveal">
+          Computer Science student at the University of Greenwich,
+          building software that solves real problems, from web apps to AI.
+        </p>
+        <div class="buttons reveal">
+          <a href="#projects" class="btn btn-primary">View my projects <span class="arrow">→</span></a>
+          <a href="assets/Saqib-CV.pdf" class="btn btn-ghost" download>Download CV</a>
+        </div>
+      </div>
+
+      <!-- Floating card on the right (hidden on phones) -->
+      <div class="hero-card glass tilt" aria-hidden="true">
+        <p class="hero-card-label">Currently building</p>
+        <h3>RAG AI Assistant</h3>
+        <p>Own vector search, embeddings and chunking, written from scratch in Python.</p>
+        <div class="code-lines">
+          <span><i>def</i> search(query, k=5):</span>
+          <span>&nbsp;&nbsp;vec = embed(query)</span>
+          <span>&nbsp;&nbsp;<i>return</i> index.top_k(vec, k)</span>
+        </div>
+      </div>
+
+      <a href="#about" class="scroll-hint" aria-label="Scroll down"><span></span></a>
+    </section>
+
+    <!-- 3. ABOUT ME, with three numbers that count up -->
+    <section id="about" class="section container">
+      <p class="section-label reveal">01 · About</p>
+      <h2 class="reveal">Building for real people, <span class="gradient-text">not just for marks.</span></h2>
+      <div class="about-grid">
+        <div class="reveal">
+          <p class="lead">
+            I'm a Computer Science student at the University of Greenwich, where I finished
+            my first year with a first-class 74% average (83% in Principles of Software Engineering).
+            I focus on backend development: APIs, databases and security.
+          </p>
+          <p class="lead">
+            I'm especially interested in AI, and I'm currently building a retrieval-augmented
+            (RAG) assistant from scratch. Outside university I lead regional reporting for a
+            national youth organisation, which taught me how much good tools and clean data matter.
+            I speak English, Urdu, Hindi and Punjabi.
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat glass reveal">
+            <strong><span class="count" data-target="74">0</span>%</strong>
+            <span>first-year average (first class)</span>
+          </div>
+          <div class="stat glass reveal">
+            <strong>£<span class="count" data-target="15000">0</span>+</strong>
+            <span>raised in under a month</span>
+          </div>
+          <div class="stat glass reveal">
+            <strong>£<span class="count" data-target="6000">0</span>+</strong>
+            <span>raised with the Salvation Army</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PROJECTS: the most important section -->
+    <section id="projects" class="section container">
+      <p class="section-label reveal">02 · Projects</p>
+      <h2 class="reveal">Things I've built</h2>
+      <div class="cards">
+
+        <article class="card glass tilt spotlight reveal">
+          <div class="card-top">
+            <span class="card-icon">🔐</span>
+            <span class="status status-done">Finished</span>
+          </div>
+          <h3>Secure File Vault API</h3>
+          <p>
+            A REST API for storing files safely. Every file is encrypted with AES-256
+            before it is saved, and users sign in through an authentication system I built myself.
+          </p>
+          <ul class="tags">
+            <li>Python</li><li>FastAPI</li><li>SQLAlchemy</li><li>AES-256</li><li>Custom auth</li>
+          </ul>
+          <div class="card-links">
+            <a href="https://github.com/saq564" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
+          </div>
+        </article>
+
+        <article class="card glass tilt spotlight reveal">
+          <div class="card-top">
+            <span class="card-icon">🧠</span>
+            <span class="status status-progress">In progress</span>
+          </div>
+          <h3>RAG AI Assistant Engine</h3>
+          <p>
+            An AI assistant that answers questions from your own documents and shows its sources.
+            I'm writing the core parts myself: text chunking, embeddings and my own vector search.
+          </p>
+          <ul class="tags">
+            <li>Python</li><li>NumPy</li><li>Vector search</li><li>LLMs</li>
+          </ul>
+          <div class="card-links">
+            <span class="muted">Code and live demo coming soon</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- "ASK ABOUT SAQIB" CHAT PREVIEW
+         For now the answers are pre-written in script.js (block 12).
+         Later, the RAG engine will answer these questions for real. -->
+    <section id="ask" class="section container">
+      <div class="ask-grid">
+        <div>
+          <p class="section-label reveal">03 · Ask AI</p>
+          <h2 class="reveal">Don't read everything. <span class="gradient-text">Just ask.</span></h2>
+          <p class="lead reveal">
+            Ask my assistant about my projects, skills or experience.
+            Every answer shows where it came from, just like a real RAG system.
+          </p>
+          <p class="ask-note reveal">
+            <span class="status status-progress">Preview</span>
+            Answers are pre-written for now. Soon they'll come from the RAG engine I'm building from scratch.
+          </p>
+        </div>
+
+        <div class="chat glass reveal">
+          <div class="chat-head">
+            <span class="chat-avatar">S</span>
+            <div>
+              <strong>Saqib's assistant</strong>
+              <span class="chat-online"><span class="dot"></span>Online</span>
+            </div>
+          </div>
+          <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+          <div class="chat-chips" id="chat-chips"></div>
+          <form class="chat-input" id="chat-form">
+            <input id="chat-text" type="text" placeholder="Ask anything about Saqib..." autocomplete="off" aria-label="Your question">
+            <button type="submit" aria-label="Send">↑</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. EXPERIENCE & LEADERSHIP -->
+    <section id="experience" class="section container">
+      <p class="section-label reveal">04 · Experience</p>
+      <h2 class="reveal">Experience &amp; leadership</h2>
+      <div class="timeline">
+
+        <article class="job glass reveal">
+          <div class="job-head">
+            <div>
+              <h3>Regional General Secretary &amp; Community Operations Coordinator</h3>
+              <span class="job-place">Majlis Khuddam-ul-Ahmadiyya (MKA) · Volunteering</span>
+            </div>
+            <span class="job-date">Nov 2025 – Now</span>
+          </div>
+          <ul>
+            <li>Make sure local youth leaders submit their reports on time, and check each one for accuracy and missing information.</li>
+            <li>Organise and lead regional meetings.</li>
+            <li>Led a partnership with the Salvation Army that raised over <strong>£6,000</strong> to provide hot food for residents.</li>
+            <li>Part of a campaign that raised over <strong>£15,000 in under a month</strong> to build a water well and help schools in Ghana.</li>
+            <li>Organised clothes donations to the Welcome Project in Ilford and visits to local care homes.</li>
+          </ul>
+        </article>
+
+        <article class="job glass reveal">
+          <div class="job-head">
+            <div>
+              <h3>Cyber Security Intern</h3>
+              <span class="job-place">London Success Academy</span>
+            </div>
+            <span class="job-date">Mar – Apr 2026</span>
+          </div>
+          <ul>
+            <li>Learned security monitoring, threat detection, vulnerability assessment, risk analysis and incident response.</li>
+            <li>Identified system risks in a real-world scenario.</li>
+            <li>Delivered a final presentation on a security case study.</li>
+          </ul>
+        </article>
+
+        <article class="job glass reveal">
+          <div class="job-head">
+            <div>
+              <h3>Parts Advisor (Work Experience)</h3>
+              <span class="job-place">Ford Motor Company</span>
+            </div>
+            <span class="job-date">Mar 2024</span>
+          </div>
+          <ul>
+            <li>Managed inventory on Ford's IT system, spotting shortages and processing replacement orders.</li>
+            <li>Recorded parts coming in and out so the physical stock matched the digital system.</li>
+            <li>Worked with mechanics to make sure every part they needed was in stock.</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 6. SKILLS -->
+    <section id="skills" class="section container">
+      <p class="section-label reveal">05 · Skills</p>
+      <h2 class="reveal">What I work with</h2>
+      <ul class="badges reveal">
+        <li>Python</li><li>SQL</li><li>FastAPI</li><li>SQLAlchemy</li>
+        <li>Git</li><li>HTML</li><li>CSS</li><li>JavaScript</li>
+      </ul>
+    </section>
+
+    <!-- 7. CONTACT -->
+    <section id="contact" class="section container">
+      <div class="contact-box glass reveal">
+        <p class="section-label">06 · Contact</p>
+        <h2>Let's build something <span class="gradient-text">together.</span></h2>
+        <p class="lead">I'm looking for internships and placements. My inbox is always open.</p>
+        <div class="buttons">
+          <button class="btn btn-primary" id="copy-email" data-email="ahmedsaqib086@gmail.com">
+            <span id="copy-email-text">Copy my email</span>
+          </button>
+          <a href="https://github.com/saq564" class="btn btn-ghost" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/saqib-ahmed-7564972b5" class="btn btn-ghost" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="assets/Saqib-CV.pdf" class="btn btn-ghost" download>Download CV</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer container">
+    <p>© <span id="year"></span> Saqib. Built by hand with HTML, CSS and JavaScript.</p>
+    <button class="terminal-hint" id="terminal-hint">Psst… press <kbd>`</kbd> or tap here for a terminal</button>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+
+  <!-- HIDDEN TERMINAL: opens with the ` key (top left of the keyboard) -->
+  <div class="terminal-backdrop" id="terminal" hidden>
+    <div class="terminal" role="dialog" aria-label="Terminal">
+      <div class="terminal-bar">
+        <span class="t-dot" style="background:#ff5f57"></span>
+        <span class="t-dot" style="background:#febc2e"></span>
+        <span class="t-dot" style="background:#28c840"></span>
+        <span class="terminal-title">saqib@portfolio: ~</span>
+        <button class="terminal-close" id="terminal-close" aria-label="Close terminal">✕</button>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div id="terminal-output"></div>
+        <form class="terminal-line" id="terminal-form">
+          <span class="t-prompt">saqib@portfolio:~$</span>
+          <input id="terminal-input" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal command">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Glowing cursor (only shown on computers with a mouse) -->
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
