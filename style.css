@@ -368,16 +368,24 @@ a { color: inherit; text-decoration: none; }
 
 /* ============================================================
    SCROLL ANIMATION
-   Everything with class "reveal" starts invisible and a bit
-   lower. script.js adds "visible" when it scrolls into view,
-   and the transition slides it up smoothly.
+   Things with class "reveal" are hidden and a bit lower ONLY when
+   JavaScript is running (the "js" class on <html>). script.js adds
+   "visible" when they scroll into view, and they slide up smoothly.
+   Without JavaScript, or if it breaks, everything just shows.
    ============================================================ */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+.reveal { transition: opacity 0.8s ease, transform 0.8s ease; }
+.js .reveal { opacity: 0; transform: translateY(30px); }
+.js .reveal.visible,
+.js.show-all .reveal { opacity: 1; transform: none; }
+
+/* The intro fades in by itself when the page loads (CSS only, no JavaScript) */
+.intro { animation: intro-in 0.8s ease both; }
+.intro:nth-child(2) { animation-delay: 0.1s; }
+.intro:nth-child(3) { animation-delay: 0.2s; }
+.intro:nth-child(4) { animation-delay: 0.3s; }
+@keyframes intro-in {
+  from { opacity: 0; transform: translateY(20px); }
 }
-.reveal.visible { opacity: 1; transform: none; }
 
 /* ============================================================
    3. ABOUT
@@ -608,7 +616,7 @@ a { color: inherit; text-decoration: none; }
 /* People who turn off animations in their device settings get a still page */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal { opacity: 1; transform: none; }
+  .js .reveal { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
 }
 
@@ -888,5 +896,5 @@ body.cursor-hover .cursor-ring {
 }
 @media (max-width: 720px) {
   .chat { height: 480px; }
-  .terminal-hint kbd { display: none; }
+  .desktop-only { display: none; }
 }

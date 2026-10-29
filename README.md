@@ -4,7 +4,7 @@ Phase 1 of the master plan. Plain HTML, CSS and a little JavaScript: no framewor
 
 ## Files
 - `index.html`: the content (what's on the page)
-- `style.css`: the look ("Dark glow" style). Colours are variables at the top, and light mode swaps them. Sections are labelled to match the page.
+- `style.css`: the look. Colours are variables at the top: change `--accent` to recolour the whole site. Light mode swaps the variables. Sections are labelled to match the page.
 - `script.js`: all the moving parts, in 15 numbered blocks. The big ones: the living AI network in the intro (10), the "Ask about Saqib" chat with its pre-written answers (12), the hidden terminal (13), and the glowing cursor and magnetic buttons (14)
 - `assets/`: put your CV here as `Saqib-CV.pdf`
 

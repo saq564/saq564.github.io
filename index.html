@@ -4,8 +4,15 @@
   <meta charset="UTF-8">
   <!-- Makes the page fit phone screens instead of showing a tiny desktop page -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saqib | Software Developer</title>
-  <meta name="description" content="Saqib, Computer Science student at the University of Greenwich, building software that solves real problems, from web apps to AI.">
+  <title>Saqib Ahmed - Computer Science student, University of Greenwich</title>
+  <meta name="description" content="Saqib Ahmed, Computer Science student at the University of Greenwich, building software that solves real problems, from web apps to AI.">
+  <!-- Tells Google this is the one true address of the page -->
+  <link rel="canonical" href="https://saq564.github.io/">
+  <!-- The preview card shown when the link is shared on LinkedIn, WhatsApp, etc. -->
+  <meta property="og:title" content="Saqib Ahmed - Computer Science student, University of Greenwich">
+  <meta property="og:description" content="Saqib Ahmed, Computer Science student at the University of Greenwich, building software that solves real problems, from web apps to AI.">
+  <meta property="og:url" content="https://saq564.github.io/">
+  <meta property="og:type" content="website">
   <!-- Inter is a free font from Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +24,20 @@
       const saved = localStorage.getItem("theme");
       if (saved) document.documentElement.dataset.theme = saved;
     } catch (e) {}
+
+    // "js" tells style.css that JavaScript is running, so it's safe to hide
+    // things for the fade-in animation (script.js shows them again).
+    document.documentElement.classList.add("js");
+
+    // Safety net: if script.js crashes or never runs (some in-app browsers,
+    // like Snapchat's or Instagram's, do this), show everything anyway.
+    function showEverything() {
+      document.documentElement.classList.add("show-all");
+    }
+    window.addEventListener("error", showEverything);
+    setTimeout(() => {
+      if (!window.revealWorking) showEverything();
+    }, 2000);
   </script>
 </head>
 <body>
@@ -55,16 +76,16 @@
       <!-- 1. The "living AI network": dots and lines drawn by script.js -->
       <canvas id="network" class="network" aria-hidden="true"></canvas>
       <div class="hero-text">
-        <div class="pill reveal"><span class="dot"></span>Open to internships &amp; placements</div>
-        <h1 class="reveal">
+        <div class="pill intro"><span class="dot"></span>Open to internships &amp; placements</div>
+        <h1 class="intro">
           Hi, I'm Saqib.<br>
           <span class="gradient-text">I build<br><span id="typed">real products</span><span class="cursor"></span></span>
         </h1>
-        <p class="tagline reveal">
+        <p class="tagline intro">
           Computer Science student at the University of Greenwich,
           building software that solves real problems, from web apps to AI.
         </p>
-        <div class="buttons reveal">
+        <div class="buttons intro">
           <a href="#projects" class="btn btn-primary">View my projects <span class="arrow">→</span></a>
           <a href="assets/Saqib-CV.pdf" class="btn btn-ghost" download>Download CV</a>
         </div>
@@ -105,15 +126,15 @@
         </div>
         <div class="stats">
           <div class="stat glass reveal">
-            <strong><span class="count" data-target="74">0</span>%</strong>
+            <strong><span class="count" data-target="74">74</span>%</strong>
             <span>first-year average (first class)</span>
           </div>
           <div class="stat glass reveal">
-            <strong>£<span class="count" data-target="15000">0</span>+</strong>
+            <strong>£<span class="count" data-target="15000">15,000</span>+</strong>
             <span>raised in under a month</span>
           </div>
           <div class="stat glass reveal">
-            <strong>£<span class="count" data-target="6000">0</span>+</strong>
+            <strong>£<span class="count" data-target="6000">6,000</span>+</strong>
             <span>raised with the Salvation Army</span>
           </div>
         </div>
@@ -288,7 +309,7 @@
 
   <footer class="footer container">
     <p>© <span id="year"></span> Saqib. Built by hand with HTML, CSS and JavaScript.</p>
-    <button class="terminal-hint" id="terminal-hint">Psst… press <kbd>`</kbd> or tap here for a terminal</button>
+    <button class="terminal-hint" id="terminal-hint">Psst… <span class="desktop-only">press <kbd>`</kbd> or</span> tap here for a terminal</button>
     <a href="#top">Back to top ↑</a>
   </footer>
 

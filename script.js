@@ -71,24 +71,28 @@ if (!reduceMotion) {
 }
 
 // ---------- 5. Fade-in on scroll ----------
-// An IntersectionObserver tells us when an element comes on screen.
-// We add "visible", and the CSS transition slides it into place.
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-      revealObserver.unobserve(entry.target);  // only animate once
-    }
-  });
-}, { threshold: 0.15 });
-
-document.querySelectorAll(".reveal").forEach((el, i) => {
+// Every time you scroll, check which hidden items are now on screen
+// and add "visible" to them. The CSS transition slides them into place.
+const revealItems = document.querySelectorAll(".reveal");
+revealItems.forEach((el, i) => {
   // Items next to each other appear one after another, not all at once
   el.style.transitionDelay = (i % 4) * 0.08 + "s";
-  revealObserver.observe(el);
 });
 
-// ---------- 6. Numbers that count up (£15,000 and £6,000) ----------
+function revealOnScreen() {
+  revealItems.forEach((el) => {
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+      el.classList.add("visible");
+    }
+  });
+}
+
+// ---------- 6. Numbers that count up (74%, £15,000 and £6,000) ----------
+// The real numbers are written in index.html and stay there until the
+// stat is on screen. We never reset them to 0, so a slow phone, a
+// screenshot or a crashed script always shows the real number.
+const counters = document.querySelectorAll(".count");
+
 function countUp(el) {
   const target = Number(el.dataset.target);
   const duration = 1500;
@@ -97,25 +101,33 @@ function countUp(el) {
   function step(now) {
     const t = Math.min((now - start) / duration, 1);
     const eased = 1 - Math.pow(1 - t, 3);  // starts fast, slows down at the end
-    el.textContent = Math.round(target * eased).toLocaleString("en-GB");
+    // Count from half the number up to the full number, never from 0
+    el.textContent = Math.round(target * (0.5 + 0.5 * eased)).toLocaleString("en-GB");
     if (t < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
 
-const countObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      countUp(entry.target);
-      countObserver.unobserve(entry.target);
+function countOnScreen() {
+  counters.forEach((el) => {
+    if (!el.dataset.counted && el.getBoundingClientRect().top < window.innerHeight * 0.85) {
+      el.dataset.counted = "yes";  // only count once
+      if (!reduceMotion) countUp(el);
     }
   });
-}, { threshold: 0.6 });
+}
 
-document.querySelectorAll(".count").forEach((el) => {
-  if (reduceMotion) el.textContent = Number(el.dataset.target).toLocaleString("en-GB");
-  else countObserver.observe(el);
-});
+function onScreenCheck() {
+  revealOnScreen();
+  countOnScreen();
+}
+window.addEventListener("scroll", onScreenCheck, { passive: true });
+window.addEventListener("resize", onScreenCheck);
+setInterval(onScreenCheck, 1000);  // backup, for in-app browsers that don't send scroll events
+onScreenCheck();
+
+// Tells the safety net in index.html that the fade-in is working
+window.revealWorking = true;
 
 // ---------- 7. Cards that tilt and light up under the mouse ----------
 // Only on devices with a real mouse (phones don't have hover).
@@ -148,8 +160,10 @@ if (!reduceMotion && window.matchMedia("(hover: hover)").matches) {
 }
 
 // ---------- 8. Highlight the menu link for the section you're reading ----------
+// (An IntersectionObserver tells us when something comes on screen.
+// Very old browsers don't have one, so we check first.)
 const sections = document.querySelectorAll("main section[id]");
-const sectionObserver = new IntersectionObserver((entries) => {
+const sectionObserver = "IntersectionObserver" in window && new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
       navLinks.querySelectorAll("a").forEach((link) => {
@@ -158,7 +172,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
     }
   });
 }, { rootMargin: "-45% 0px -50% 0px" });
-sections.forEach((s) => sectionObserver.observe(s));
+if (sectionObserver) sections.forEach((s) => sectionObserver.observe(s));
 
 // ---------- 9. "Copy my email" button ----------
 const copyButton = document.getElementById("copy-email");
@@ -295,9 +309,11 @@ hero.addEventListener("mouseleave", () => {
   mouse.y = -9999;
 });
 
-new IntersectionObserver((entries) => {
-  heroOnScreen = entries[0].isIntersecting;
-}).observe(hero);
+if ("IntersectionObserver" in window) {
+  new IntersectionObserver((entries) => {
+    heroOnScreen = entries[0].isIntersecting;
+  }).observe(hero);
+}
 
 window.addEventListener("resize", sizeCanvas);
 sizeCanvas();
