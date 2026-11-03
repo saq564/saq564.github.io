@@ -12,9 +12,9 @@
   --glass-border: rgba(255, 255, 255, 0.10);
   --grid-line: rgba(255, 255, 255, 0.035);
   --red: #8b6cff;
-  --blue: #2fb8ff;
-  --green: #3ddc97;
-  --amber: #f5b84c;
+  --purple: #2fb8ff;
+  --red: #3ddc97;
+  --black: #f5b84c;
   --glow-1: rgba(109, 76, 255, 0.45);
   --glow-2: rgba(0, 212, 255, 0.28);
 }
