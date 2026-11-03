@@ -5,18 +5,18 @@
    ============================================================ */
 :root,
 [data-theme="dark"] {
-  --bg: #07080d;
-  --text: #eef0f7;
-  --muted: #9aa3b8;
-  --glass: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --grid-line: rgba(255, 255, 255, 0.035);
-  --red: #8b6cff;
-  --purple: #2fb8ff;
-  --red: #3ddc97;
-  --black: #f5b84c;
-  --glow-1: rgba(109, 76, 255, 0.45);
-  --glow-2: rgba(0, 212, 255, 0.28);
+ 8   --bg: #000000;
+ 9     --text: #eef0f7;
+10     --muted: #9aa3b8;
+11     --glass: rgba(255, 255, 255, 0.04);
+12     --glass-border: rgba(255, 255, 255, 0.10);
+13     --grid-line: rgba(255, 255, 255, 0.035);
+14   --purple: #ff3b4e;
+15   --blue: #2f7bff;
+16     --green: #3ddc97;
+17     --amber: #f5b84c;
+18   --glow-1: rgba(255, 59, 78, 0.35);
+19   --glow-2: rgba(47, 123, 255, 0.28);
 }
 
 [data-theme="light"] {
