@@ -174,21 +174,6 @@ const sectionObserver = "IntersectionObserver" in window && new IntersectionObse
 }, { rootMargin: "-45% 0px -50% 0px" });
 if (sectionObserver) sections.forEach((s) => sectionObserver.observe(s));
 
-// ---------- 9. "Copy my email" button ----------
-const copyButton = document.getElementById("copy-email");
-const copyText = document.getElementById("copy-email-text");
-
-copyButton.addEventListener("click", async () => {
-  const email = copyButton.dataset.email;
-  try {
-    await navigator.clipboard.writeText(email);
-    copyText.textContent = "Copied ✓";
-  } catch (e) {
-    window.location.href = "mailto:" + email;  // fallback: open the email app
-  }
-  setTimeout(() => (copyText.textContent = "Copy my email"), 2000);
-});
-
 // ---------- 10. Living AI network in the intro ----------
 // Dots drift around. Close dots get joined by a line, like a neural network.
 // The mouse connects to nearby dots and gently pushes them aside.
@@ -352,7 +337,7 @@ const knowledge = [
   {
     chip: "Is he open to work?",
     keywords: ["hire", "hiring", "open", "available", "internship", "placement", "job", "contact", "email", "reach"],
-    answer: "Yes! He's looking for internships and placements. The quickest way to reach him is the Contact section at the bottom, where you can copy his email or open his LinkedIn.",
+    answer: "Yes! He's looking for internships and placements. The quickest way to reach him is the Contact section at the bottom, where you can message him on LinkedIn or see his GitHub.",
     source: "Contact",
   },
   {
@@ -518,7 +503,6 @@ const commands = {
     print(["  parts inventory: matched physical stock to the IT system"]);
   },
   contact() {
-    print(["email     ", "t-muted"], [copyButton.dataset.email]);
     print(["github    ", "t-muted"], ["github.com/saq564"]);
     print(["linkedin  ", "t-muted"], ["linkedin.com/in/saqib-ahmed-7564972b5"]);
   },
