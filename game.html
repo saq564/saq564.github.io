@@ -1372,7 +1372,11 @@
     function sizeCity() {
       const W = city.clientWidth || innerWidth, H = city.clientHeight || innerHeight;
       const w = Math.max(W, H * (W / H < 1 ? 0.8 : 1) * 16 / 9), h = w * 9 / 16;
-      wrap.style.width = w + "px"; wrap.style.height = h + "px"; wrap.style.top = (H - h) + "px"; wrap.style.bottom = "auto";
+      // on wide, short screens (laptops) the city is taller than the window. Crop the river at the bottom
+      // instead of the sky at the top, so the building labels never sit under the top bar.
+      const minPin = Math.min(...PLACES.slice(1).map(p => p.pin[1])) / 900 * h;
+      let top = H - h; if (top < 0) top = Math.min(0, Math.max(top, 150 - minPin, H - h * 0.86));
+      wrap.style.width = w + "px"; wrap.style.height = h + "px"; wrap.style.top = top + "px"; wrap.style.bottom = "auto";
     }
     addEventListener("resize", sizeCity); sizeCity();
 
