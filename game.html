@@ -1533,5 +1533,17 @@
     window.__film = { mode: () => mode, select, enterChapter, backToCity, lit: () => litSet.size, tod: () => tod, go, next, cur: () => cur, busy: () => busy, sound: on => { soundOn = on; } };
   })();
   </script>
+  <script>
+    // when this page is shown inside the homepage (in a frame), links open in the full window
+    if (window.self !== window.top) {
+      document.documentElement.classList.add("embedded");
+      const home = document.querySelector(".topbar .home");
+      if (home) { home.textContent = "Full screen ↗"; home.href = "game.html"; home.target = "_top"; }
+      document.addEventListener("click", e => {
+        const a = e.target.closest("a"); if (!a) return;
+        a.target = /^https?:/.test(a.getAttribute("href") || "") ? "_blank" : "_top";
+      }, true);
+    }
+  </script>
 </body>
 </html>
