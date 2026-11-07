@@ -58,7 +58,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#ask">Ask AI</a></li>
-        <li><a href="game.html">My journey</a></li>
+        <li><a href="#journey">My journey</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -105,6 +105,21 @@
       </div>
 
       <a href="#about" class="scroll-hint" aria-label="Scroll down"><span></span></a>
+    </section>
+    
+    <!-- MY JOURNEY: the interactive city (game.html), shown right here on the homepage -->
+    <section id="journey" class="section container">
+      <p class="section-label reveal">My journey</p>
+      <h2 class="reveal">Explore my story <span class="gradient-text">as a city.</span></h2>
+      <p class="reveal" style="color: var(--muted, #9aa0b4); margin-bottom: 24px;">Tap any building to step inside. Light up all seven.</p>
+      <div class="journey-frame">
+        <iframe src="game.html" title="My journey as an interactive city" loading="lazy" allow="fullscreen"></iframe>
+      </div>
+      <style>
+        .journey-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,.12); background: #070a1c; }
+        .journey-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        @media (max-width: 700px) { .journey-frame { aspect-ratio: auto; height: 78vh; } }
+      </style>
     </section>
 
     <!-- 3. ABOUT ME, with three numbers that count up -->
