@@ -1550,9 +1550,8 @@
       // the mouse wheel scrolls the homepage up and down, even when the pointer is over the city
       addEventListener("wheel", e => {
         if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // sideways swipes still move the city
-        e.stopImmediatePropagation(); e.preventDefault();
-        try { window.parent.scrollBy({ top: e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1), behavior: "instant" }); } catch (err) {}
-      }, { capture: true, passive: false });
+        e.stopImmediatePropagation(); // let the browser scroll the homepage itself, at its normal speed
+      }, { capture: true, passive: true });
       // on phones, swiping up and down scrolls the homepage too
       const s1el = document.querySelector(".s1"); if (s1el) s1el.style.touchAction = "pan-y";
       const st = document.createElement("style"); st.textContent = "#cityScroll { overscroll-behavior: auto; }"; document.head.appendChild(st);
