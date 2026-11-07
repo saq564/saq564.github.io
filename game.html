@@ -1547,6 +1547,15 @@
         const a = e.target.closest("a"); if (!a) return;
         a.target = /^https?:/.test(a.getAttribute("href") || "") ? "_blank" : "_top";
       }, true);
+      // the mouse wheel scrolls the homepage up and down, even when the pointer is over the city
+      addEventListener("wheel", e => {
+        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // sideways swipes still move the city
+        e.stopImmediatePropagation(); e.preventDefault();
+        try { window.parent.scrollBy(0, e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1)); } catch (err) {}
+      }, { capture: true, passive: false });
+      // on phones, swiping up and down scrolls the homepage too
+      const s1el = document.querySelector(".s1"); if (s1el) s1el.style.touchAction = "pan-y";
+      const st = document.createElement("style"); st.textContent = "#cityScroll { overscroll-behavior: auto; }"; document.head.appendChild(st);
     }
   </script>
 </body>
